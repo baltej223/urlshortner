@@ -1,4 +1,13 @@
+// next.config.js
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+    // Enable React Strict Mode for better debugging during development
+    reactStrictMode: true,
 
-export default nextConfig;
+    // Define environment variables to use across the app
+    env: {
+        MONGODB_URI: process.env.MONGODB_URI,
+    },
+};
+
+module.exports = nextConfig;
