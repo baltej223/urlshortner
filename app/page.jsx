@@ -22,7 +22,7 @@ export default function UrlShortener() {
       <div className="bg-gray-500 p-8 rounded-lg shadow-md w-full max-w-md">
         <h1 className="text-2xl font-bold mb-6 text-center text-gray-800 text-white">URL Shortener</h1>
         <UrlForm onShorten={handleShorten} />
-        {shortenedUrl && <ShortenedUrl url={`${shortenedUrl}`} />}
+        {shortenedUrl && <ShortenedUrl url={`${window.location.href}${shortenedUrl}`} />}
       </div>
     </div>
   )
