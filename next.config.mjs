@@ -6,8 +6,8 @@ const nextConfig = {
 
     // Define environment variables to use across the app
     env: {
-        MONGODB_URI: process.env.MONGODB_URI,
+        MONGODB_URI: process.env.MONGODB_URI, 
     },
 };
 
-module.exports = nextConfig;
+export default nextConfig;
