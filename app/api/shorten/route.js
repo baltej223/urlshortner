@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
- import { connectDB, model } from '@/database.js';
+import { connectDB, model } from '@/database.js';
 
 await connectDB();
 
@@ -33,6 +33,7 @@ export async function POST(req) {
     
     entry.save()
     .then((doc)=>{
+      console.log("Document saved, saved doc:", JSON.parse(doc));
       // return NextResponse.json({ key: randKey , doc:doc}, { status: 200 });
     }).catch((e)=>{
       return NextResponse.json({ "error":"Some error occured!","caughtError":e }, { status: 500 });

@@ -7,12 +7,23 @@ let keySchema = new mongoose.Schema({
 
 export let model = mongoose.models.key || mongoose.model("key", keySchema);
 
-export const connectDB = async () => {
-    if (mongoose.connections[0].readyState) {
-      return;
-    }
-    // console.log(process.env.MONGODB_URI);
-    await mongoose.connect(process.env.MONGODB_URI);
-    // await mongoose.connect('mongodb://127.0.0.1:27017/urlshortner');
-    console.log("Connected to MongoDB");
-  };
+let cached = global.mongoose;
+  if (!cached) {
+    cached = global.mongoose = { connection: null, promise: null };
+  }
+  
+export async function connectDB() {
+  if (cached.connection) {
+    return cached.connection;
+  }
+
+  if (!cached.promise) {
+    const promise = mongoose.connect(process.env.MONGODB_URI);
+
+    cached.promise = promise;
+  }
+
+  cached.connection = await cached.promise;
+  return cached.connection;
+
+};
