@@ -29,7 +29,9 @@ export async function POST(req) {
     const re = await req.json();
     console.log("received request:", re);
     let entry = new model({key:randKey, url:re.url});
-    entry.save();
-    return NextResponse.json({ key: randKey }, { status: 200 });
+    entry.save().then((doc)=>{
+      return NextResponse.json({ key: randKey }, { status: 200 });
+    });
+    return NextResponse.json({ "error":"Some error occured!" }, { status: 500 });
   
 }

@@ -14,7 +14,7 @@ export default function UrlShortener() {
     })
     const data = await response.json()
     setShortenedUrl(data.key)
-    console.log(data.key);
+    console.log("Responce recived with key: ",data.key, "and JSON:", data);
   }
 
   return (
