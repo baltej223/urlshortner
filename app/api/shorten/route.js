@@ -1,9 +1,11 @@
 import { NextResponse } from 'next/server';
 import { connectDB, model } from '@/database.js';
 
-await connectDB();
 
 export async function POST(req) {
+
+await connectDB();
+
 
     function genRandKey(){
         const KEY_LENGTH = 5;
