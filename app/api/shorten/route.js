@@ -40,7 +40,7 @@ await connectDB();
     }).catch((e)=>{
       return NextResponse.json({ "error":"Some error occured!","caughtError":e }, { status: 500 });
     });
-    let savedDoc = model.findOne({key:{$eq:randKey});
+    let savedDoc = model.findOne({key:{$eq:randKey}});
     if (savedDoc)
     {return NextResponse.json({ key: randKey}, { status: 200 });}
     else{return NextResponse.json({ "error":"Some error occured"}, { status: 500 });}
