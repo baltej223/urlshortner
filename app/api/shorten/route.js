@@ -42,9 +42,8 @@ await connectDB();
     });
     let savedDoc = model.findOne({key:{$eq:randKey});
     if (savedDoc)
-    return NextResponse.json({ key: randKey}, { status: 200 });
-    else
-      return NextResponse.json({ "error":"Some error occured"}, { status: 500 });
+    {return NextResponse.json({ key: randKey}, { status: 200 });}
+    else{return NextResponse.json({ "error":"Some error occured"}, { status: 500 });}
         
     // return NextResponse.json({ "error":"Some error occured!" }, { status: 500 });
   
