@@ -1,14 +1,43 @@
 "use client";
-import { redirect } from "next/navigation";
-import { connectDB, model } from "@/database";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
-await connectDB();
+export default function Page() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
 
-export default async function Page({ params }) {
-  const { key } = await params;
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const redirectUrl =
+          window.location.protocol +
+          "//" +
+          window.location.hostname +
+          ":" +
+          window.location.port +
+          "/api/getUrl" +
+          window.location.pathname;
 
-  console.log(key);
-  
-  let res = await fetch("/api/getUrl/"+key);
-  redirect(res.url?res.url:"./");
+        console.log("redirect:", redirectUrl);
+        
+        const res = await fetch(redirectUrl);
+        const data = await res.json();
+
+        if (data.url) {
+          router.push(data.url);
+        } else {
+          router.push("./");
+        }
+      } catch (error) {
+        console.error("Error fetching URL:", error);
+        router.push("./");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
+  }, [router]);
+
+  return loading ? <p>Redirecting...</p> : null;
 }

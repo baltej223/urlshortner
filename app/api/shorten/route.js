@@ -28,23 +28,24 @@ await connectDB();
     // if (checkIfKeyExist(randKey)){
          
     // }
-    const re = await req.json();
-    console.log("received request:", re);
     
-    let entry = new model({key:randKey, url:re.url});
     
-    entry.save()
-    .then((doc)=>{
-      console.log("Document saved, saved doc:", JSON.parse(doc));
-      // return NextResponse.json({ key: randKey , doc:doc}, { status: 200 });
-    }).catch((e)=>{
-      return NextResponse.json({ "error":"Some error occured!","caughtError":e }, { status: 500 });
-    });
-    let savedDoc = await model.findOne({key:{$eq:randKey}}).exec();
-    if (savedDoc)
-    {return NextResponse.json({ key: randKey}, { status: 200 });}
-    else{return NextResponse.json({ "error":"Some error occured"}, { status: 500 });}
-        
-    // return NextResponse.json({ "error":"Some error occured!" }, { status: 500 });
-  
+  const re = await req.json();
+  console.log("received request:", re);
+
+try {
+    let entry = new model({key: randKey, url: re.url});
+    
+    // Wait for the save operation to complete
+    const savedDoc = await entry.save();
+    console.log("Document saved, saved doc:", savedDoc);
+    return NextResponse.json({ key: randKey }, { status: 200 });
+    
+} catch (error) {
+    console.error("Error saving document:", error);
+    return NextResponse.json({ 
+        "error": "Some error occurred!",
+        "caughtError": error 
+    }, { status: 500 });
+}
 }
