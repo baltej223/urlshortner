@@ -6,7 +6,7 @@ let keySchema = new mongoose.Schema({
     url:String
 });
 
-export let model = mongoose.models.key || mongoose.model("key", keySchema);
+export let model = mongoose.models.key || mongoose.model("key", keySchema); 
 
 let cached = global.mongoose;
   if (!cached) {
