@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { connectDB, model } from "@/database";
 
-export function Hndle(request) {
-    connectDB();
+export async function Hndle(request) {
+    await connectDB();
     // Todo: Check if I connected DB here do I need to connect in the further http method handler?
     
     console.log(request);
@@ -11,19 +11,23 @@ export function Hndle(request) {
     let key = pathname.replace("/", "");
     if (key != "") { 
         // THis means we are on /[key] only
-        let url = model.findOne({ key }).exec();
+        try {
+            let url = await model.findOne({ key }).exec();
 
-        console.log(url);
-
-        if (url != undefined) {
-            NextResponse.rewrite(new URL('/', request.url));
-        }
-        else {
-            NextResponse.rewrite(new URL(url.url));
+            if (url == undefined) {
+                return NextResponse.rewrite(new URL('/', request.url));
+            }
+            else {
+                return NextResponse.rewrite(new URL(url.url));
+            }
+        } catch (error) {
+            console.error("Error during URL lookup:", error);
+            return NextResponse.rewrite(new URL('/', request.url));
         }
     }
     else{
         // No need to continue (NextResponse.next()) as in @/middleware its already done.
         // (●'◡'●)
+        // return NextResponse.next();
     }
 }
