@@ -1,9 +1,9 @@
-import React from "react"
+import React from "react";
 
 export function ShortenedUrl({ url }) {
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(url)
-  }
+    navigator.clipboard.writeText(url);
+  };
 
   return (
     <div className="mt-6">
@@ -22,6 +22,5 @@ export function ShortenedUrl({ url }) {
         </button>
       </div>
     </div>
-  )
+  );
 }
-
