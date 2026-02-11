@@ -7,7 +7,6 @@ export async function POST(req) {
   const KEY_LENGTH = 5;
   const ALPHANUMERIC = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-  // Better random key generator
   function genRandKey() {
     let result = "";
     for (let i = 0; i < KEY_LENGTH; i++) {
@@ -16,14 +15,12 @@ export async function POST(req) {
     return result;
   }
 
-  // Properly async existence check
   async function keyExists(key) {
     const doc = await model.findOne({ key }).exec();
     return !!doc;
   }
 
-  // Generate unique key with loop (much safer than recursion)
-  async function generateUniqueKey(maxAttempts = 100) {
+  async function generateUniqueKey(maxAttempts = 10) {
     for (let i = 0; i < maxAttempts; i++) {
       const key = genRandKey();
       if (!(await keyExists(key))) {
@@ -41,6 +38,12 @@ export async function POST(req) {
         { error: "Valid 'url' field is required" },
         { status: 400 }
       );
+    }
+
+    let already_existing_url = await model.findOne({ url }).exec();
+    console.log(already_existing_url);
+    if (already_existing_url) {
+      return NextResponse.json({ key: already_existing_url.key });
     }
 
     const key = await generateUniqueKey();
